@@ -26,25 +26,24 @@ namespace ps
 		struct Script : public virtual ParseElement
 		{
 			std::string script;
-			Script(std::string const&script) : script(script) {}
+			Script(std::string const &script) : script(script) {}
 			virtual Script *Clone() const
 			{
 				return new Script(*this);
 			}
 			virtual ~Script(){}
 		};
-		bool DEH(Parser &, Parser::Error const&, bool w){return w;}
 	}
 	struct Parser::Impl
 	{
-		typedef std::map<std::string, ParseElement *> elems_t;
+		using elems_t = std::map<std::string, ParseElement *>;
 		elems_t elems;
-		ErrorHandler *eh;
+		ErrorHandler eh;
 
-		Impl() : eh(&DEH)
+		Impl() : eh([](Parser &, Error const &, bool w){ return w; })
 		{
 		}
-		Impl(Impl const&impl) : eh(&DEH)
+		Impl(Impl const &impl) : eh(impl.eh)
 		{
 			for(elems_t::const_iterator it = impl.elems.begin(); it != impl.elems.end(); ++it)
 			{
@@ -62,11 +61,11 @@ namespace ps
 	Parser::Parser() : impl(new Impl)
 	{
 	}
-	Parser::Parser(char const*script) : impl(new Impl)
+	Parser::Parser(char const *script) : impl(new Impl)
 	{
 		impl->elems[""] = new Script(script);
 	}
-	Parser::Parser(Parser const&parser) : impl(new Impl(*parser.impl))
+	Parser::Parser(Parser const &parser) : impl(new Impl(*parser.impl))
 	{
 	}
 	Parser::~Parser()
@@ -75,17 +74,17 @@ namespace ps
 		impl = 0;
 	}
 
-	void Parser::AddScriptFile(char const*scriptfilename)
+	void Parser::AddScriptFile(char const *scriptfilename)
 	{
 		RemoveScript(scriptfilename);
 		impl->elems[scriptfilename] = new ScriptFile(scriptfilename);
 	}
-	void Parser::AddScript(char const*scriptname, char const*contents)
+	void Parser::AddScript(char const *scriptname, char const *contents)
 	{
 		RemoveScript(scriptname);
 		impl->elems[scriptname] = new Script(contents);
 	}
-	void Parser::RemoveScript(char const*scriptname)
+	void Parser::RemoveScript(char const *scriptname)
 	{
 		Impl::elems_t e (impl->elems);
 		if(e.find(scriptname) != e.end())
@@ -112,11 +111,11 @@ namespace ps
 		delete impl;
 		impl = 0;
 	}
-	char const*Parser::Error::ErrorString() const
+	char const *Parser::Error::ErrorString() const
 	{
 		return impl->msg.c_str();
 	}
-	char const*Parser::Error::ScriptName() const
+	char const *Parser::Error::ScriptName() const
 	{
 		return impl->script.c_str();
 	}

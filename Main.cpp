@@ -1,7 +1,7 @@
 #include <iostream>
 #include <limits>
 
-signed main(signed nargs,  char const *const *args)
+int main(int nargs, char const *const *args)
 {
 	for(unsigned i = 0; i < nargs; ++i)
 	{

@@ -2,6 +2,7 @@
 #define PolyStatic_HeaderPlusPlus
 
 #include <functional>
+#include <memory>
 
 namespace ps
 {
@@ -23,7 +24,7 @@ namespace ps
 		 */
 		Parser(char const*script);
 		Parser(Parser const &parser);
-		Parser(Parser &&) noexcept;
+		Parser(Parser &&parser) noexcept;
 		~Parser() noexcept;
 
 		/**
@@ -59,14 +60,14 @@ namespace ps
 			 * depends on the implementation. The returned character
 			 * string is only valid while this Error is in scope.
 			 */
-			char const*ErrorString() const noexcept;
+			char const *ErrorString() const noexcept;
 			/**
 			 * The name of the script the error occurred in. This
 			 * is the same as that set by either AddScriptFile() or
 			 * AddScript(). The returned character string is only
 			 * valid while this Error is in scope.
 			 */
-			char const*ScriptName() const noexcept;
+			char const *ScriptName() const noexcept;
 			/**
 			 * The first line the error occurs on.
 			 */
@@ -98,18 +99,18 @@ namespace ps
 			~Error() noexcept;
 
 			struct Impl;
-			Impl *impl;
+			std::unique_ptr<Impl> impl;
 		};
 
 		/**
 		 * The function signature for a function to handle parsing Errors.
-		 * The parser that encountered the error is provided, giving access
-		 * to the Tag. A boolean is also provided indicatng whether the error
+		 * The parser that encountered the error is provided.
+		 * A boolean is also provided indicatng whether the error
 		 * is only a warning (true) or not (false). The function must return
 		 * a boolean indicating whether parsing should continue (true) or
 		 * not (false). This can simply mirror warning status.
 		 */
-		using ErrorHandler = std::function<bool (Parser &parser, Error const&error, bool warning) noexcept>;
+		using ErrorHandler = std::function<bool (Parser &parser, Error const &error, bool warning) noexcept>;
 
 		/**
 		 * Sets or replaces the one and only ErrorHandler function for this
@@ -131,10 +132,10 @@ namespace ps
 		Parser &operator=(Parser &&) = delete;
 
 		struct Impl;
-		Impl *impl;
+		std::unique_ptr<Impl> impl;
 
-		friend struct Interpreter;
-		friend struct Error;
+		friend struct ::ps::Interpreter;
+		friend struct ::ps::Error;
 	};
 
 	/**
@@ -147,61 +148,70 @@ namespace ps
 	 */
 	struct Interpreter
 	{
-		/**
-		 * You can directly associate any data (e.g. a struct) with each
-		 * interpreter instance, assuming your compiler implementation
-		 * allows for proper casting between void pointers and, at the
-		 * very least, structure pointers.
-		 */
-		void *Tag;
-
-		/**
-		 * Constructs an Interpreter with an empty program state.
-		 */
-		Interpreter();
-		/**
-		 * Copies the state of another Interpreter.
-		 */
-		Interpreter(Interpreter const&interpreter);
-		/**
-		 * Releases allocated memory and places the Interpreter in and
-		 * invalid, irrecoverable state.
-		 */
+		Interpreter() noexcept;
+		Interpreter(Interpreter const &);
+		Interpreter(Interpreter &&);
+		Interpreter &operator=(Interpreter const &);
+		Interpreter &operator=(Interpreter &&);
 		~Interpreter();
 
 		/**
-		 * Interface through which errors are reported.
+		 * Represents an Error during evaluating a function.
 		 */
-		struct ErrorHandler
+		struct Error
 		{
-			ErrorHandler(){}
-			virtual ~ErrorHandler() = 0;
-
-			virtual bool MergeConflict(/**/){return false;}
-			virtual bool InitializationError(/**/){return false;}
-			virtual bool ExecutionError(/**/){return false;}
+			/**
+			 * The error or warning message, the format of which
+			 * depends on the implementation. The returned character
+			 * string is only valid while this Error is in scope.
+			 */
+			char const*ErrorString() const noexcept;
 
 		private:
-			ErrorHandler(ErrorHandler const&);
-			ErrorHandler &operator=(ErrorHandler const&);
+			friend struct ::ps::Interpreter;
+
+			Error() noexcept;
+			Error(Error const&) noexcept;
+			Error(Error &&) noexcept;
+			Error &operator=(Error const&) noexcept;
+			Error &operator=(Error &&) noexcept;
+			~Error() noexcept;
+
+			struct Impl;
+			std::unique_ptr<Impl> impl;
 		};
 
 		/**
-		 * Adds the results of parsing a script set from a parser
-		 * into the current program state, initializing as necessary.
-		 * If errors occur during initialization, they are reported to
-		 * the error handling object.
+		 * The function signature for a function to handle interpreting Errors.
+		 * The interpreter that encountered the error is provided.
+		 */
+		using ErrorHandler = std::function<void (Parser &parser, Error const &error) noexcept>;
+
+		/**
+		 * Sets or replaces the one and only ErrorHandler function for this
+		 * parser.
+		 */
+		void SetErrorHandler(ErrorHandler const &eh) noexcept;
+
+		/**
+		 * Adds the results of parsing a script set from a parser,
+		 * uninitialized. When Initialize is called, they are merged
+		 * into the current program state.
 		 * If the parser has not yet parsed successfully, it is ignored.
 		 */
-		void Add(Parser const&parser);
+		void Add(Parser const &parser);
+
+		/**
+		 * Initializes any uninitialized code, then merges
+		 * with the current program state.
+		 */
+		void Initialize();
+
+		//member functions to actually call initialized code
 
 	private:
-		Interpreter &operator=(Interpreter const&);
-
 		struct Impl;
-		Impl *impl;
-
-		friend struct Parser;
+		std::unique_ptr<Impl> impl;
 	};
 	inline Interpreter::ErrorHandler::~ErrorHandler(){}
 }
