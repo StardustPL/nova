@@ -40,7 +40,7 @@ namespace ps
 		elems_t elems;
 		ErrorHandler eh;
 
-		Impl() : eh([](Parser &, Error const &, bool w){ return w; })
+		Impl() : eh([](Parser &, Error const &, bool w) -> bool { return w; })
 		{
 		}
 		Impl(Impl const &impl) : eh(impl.eh)
