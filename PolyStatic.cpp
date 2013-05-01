@@ -70,8 +70,6 @@ namespace ps
 	}
 	Parser::~Parser()
 	{
-		delete impl;
-		impl = 0;
 	}
 
 	void Parser::AddScriptFile(char const *scriptfilename)
@@ -108,8 +106,6 @@ namespace ps
 	}
 	Parser::Error::~Error()
 	{
-		delete impl;
-		impl = 0;
 	}
 	char const *Parser::Error::ErrorString() const
 	{
