@@ -22,7 +22,7 @@ namespace ps
 		 * to be "", or empty. Other scripts may still be added. The given
 		 * character string is copied to an internal storage.
 		 */
-		Parser(char const*script);
+		Parser(char const *script);
 		Parser(Parser const &parser);
 		Parser(Parser &&parser) noexcept;
 		~Parser() noexcept;
@@ -34,20 +34,20 @@ namespace ps
 		 * file is not accessed until Parse() is called. If a script
 		 * with the same name already exists, it will be overwritten.
 		 */
-		void AddScriptFile(char const*scriptfilename);
+		void AddScriptFile(char const *scriptfilename);
 		/**
 		 * Adds an in-memory script with the given name. If a script
 		 * with the same name already exists, it will be overwritten.
 		 * Both given character strings will be copied to an internal
 		 * storage.
 		 */
-		void AddScript(char const*scriptname, char const*contents);
+		void AddScript(char const *scriptname, char const *contents);
 		/**
 		 * Removes the script, by name, from the script set. This
 		 * includes both script file references and in-memory scripts.
 		 * Nothing happens if the script name doesn't exist.
 		 */
-		void RemoveScript(char const*scriptname);
+		void RemoveScript(char const *scriptname);
 
 		/**
 		 * Represents an Error or warning caused by the syntax of
@@ -92,9 +92,9 @@ namespace ps
 			friend struct ::ps::Parser;
 
 			Error() noexcept;
-			Error(Error const&) noexcept;
+			Error(Error const &) noexcept;
 			Error(Error &&) noexcept;
-			Error &operator=(Error const&) noexcept;
+			Error &operator=(Error const &) noexcept;
 			Error &operator=(Error &&) noexcept;
 			~Error() noexcept;
 
@@ -165,15 +165,15 @@ namespace ps
 			 * depends on the implementation. The returned character
 			 * string is only valid while this Error is in scope.
 			 */
-			char const*ErrorString() const noexcept;
+			char const *ErrorString() const noexcept;
 
 		private:
 			friend struct ::ps::Interpreter;
 
 			Error() noexcept;
-			Error(Error const&) noexcept;
+			Error(Error const &) noexcept;
 			Error(Error &&) noexcept;
-			Error &operator=(Error const&) noexcept;
+			Error &operator=(Error const &) noexcept;
 			Error &operator=(Error &&) noexcept;
 			~Error() noexcept;
 
