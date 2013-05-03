@@ -21,14 +21,15 @@ namespace ps
 	};
 	namespace types
 	{
-		template<typename Derived = void>
-		struct Type : Type<void>
-		{
-			using DerivedType = std::enable_if<std::is_base_of<Type, Derived>::value>::type;
-		};
+		template<typename = void> struct Type;
 		template<>
 		struct Type<void> : Variable<Type<void>>
 		{
+		};
+		template<typename Derived>
+		struct Type : Type<void>
+		{
+			static_assert(std::is_base_of<Type, Derived>::value, "Template parameter must be the deriving class");
 		};
 		struct Void : Type<Void>
 		{
@@ -58,9 +59,11 @@ namespace ps
 	struct Statement
 	{
 		//
+		virtual ~Statement() noexcept = default;
 	};
 	struct Declaration
 	{
+		virtual ~Declaration() noexcept = default;
 	};
 	struct Space : Declaration
 	{
