@@ -18,11 +18,7 @@ int main(int nargs, char const *const *args_)
 {
 //	auto &WaitForEnter = []{ std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); };
 	if(nargs < 1) return -1;
-	std::vector<std::string> args;
-	std::for_each(args_+1, args_+nargs, [&args](char const *s)
-	{
-		args.push_back(s);
-	});
+	std::vector<std::string> args (args_+1, args_+nargs);
 
 	if(args.size() == 0)
 	{
