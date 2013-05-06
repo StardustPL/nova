@@ -5,6 +5,7 @@
 #include <functional>
 #include <memory>
 #include <type_traits>
+#include <ostream>
 
 namespace ps
 {
@@ -72,28 +73,10 @@ namespace ps
 
 	struct Fluid
 	{
-		//Space
-	};
-
-	struct Error
-	{
-		Error(std::string const &emsg) noexcept
-		: msg(emsg)
+		bool merge(std::string const &file, std::ostream &errors = std::err)
 		{
+			//
 		}
-		Error(Error const &) noexcept = default;
-		Error(Error &&) noexcept = default;
-		Error &operator=(Error const &) noexcept = default;
-		Error &operator=(Error &&) noexcept = default;
-		~Error() noexcept = default;
-
-		std::string const &message() const noexcept
-		{
-			return msg;
-		}
-
-	private:
-		std::string msg;
 	};
 }
 
