@@ -10,7 +10,7 @@
 //"god solidify file.cliquid..." -> compile file.cliquid into file.csolid
 //"god melt file.csolid..." -> extract interface information from file.csolid to file.cgas
 
-int main(unsigned nargs, char const *const *args)
+int main(int nargs, char const *const *args)
 {
 //	auto &WaitForEnter = []{ std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); };
 	std::vector<std::string> argv (args+1, args+nargs);
@@ -22,7 +22,7 @@ int main(unsigned nargs, char const *const *args)
 	else
 	{
 		std::string command = argv.front();
-		argv.pop_front();
+		argv.erase(std::begin(argv));
 		std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 		if(command == "liquefy")
 		{
