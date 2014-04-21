@@ -1,5 +1,3 @@
-PolyStatic
-==========
-A new programming language that is combination scripted and compiled (sort of like Python) with Object Oriented goals but none of the horrid design patterns, idioms, etc. that have to be created for other languages.
-
-It is meant to be used as modular logic for games, e.g. it is intentionally designed with both object-oriented game design and user/community modifications in mind.
+Cosmos
+======
+This language is one born out of frustration with other languages. Most of the frustration is my own, some of it is from others. Hopefully someone as inexperienced as me doesn't make the same mistakes I have to live with every day in other programming languages.

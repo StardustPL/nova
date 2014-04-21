@@ -4,42 +4,37 @@
 #include <vector>
 #include <algorithm>
 
-//psi: PolyStatic Interpreter
-//"psi" -> interactive interpreter
-//"psi liquify file.ps[liquid,solid]..." -> interactive interpreter starting with environment from file.psliquid or file.pssolid (*.ps*id)
-//"psi solidify file.psliquid..." -> compile file.psliquid into file.pssolid
-//"psi melt file.pssolid..." -> extract interface information from file.pssolid to file.psgas
+//god: Cosmos Compiler/Interpreter
+//"god" -> interactive interpreter
+//"god liquefy file.c[liquid,solid]..." -> interactive interpreter starting with environment from file.cliquid or file.csolid (*.c*id)
+//"god solidify file.cliquid..." -> compile file.cliquid into file.csolid
+//"god melt file.csolid..." -> extract interface information from file.csolid to file.cgas
 
-void Liquify(std::vector<std::string> const &files = std::vector<std::string>());
-void Solidify(std::vector<std::string> const &files);
-void Melt(std::vector<std::string> const &files);
-
-int main(int nargs, char const *const *args_)
+int main(unsigned nargs, char const *const *args)
 {
 //	auto &WaitForEnter = []{ std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); };
-	if(nargs < 1) return -1;
-	std::vector<std::string> args (args_+1, args_+nargs);
+	std::vector<std::string> argv (args+1, args+nargs);
 
-	if(args.size() == 0)
+	if(argv.size() == 0)
 	{
-		Liquify();
+		//interactive
 	}
 	else
 	{
-		std::string command = args[0];
-		args.pop_front();
+		std::string command = argv.front();
+		argv.pop_front();
 		std::transform(command.begin(), command.end(), command.begin(), ::tolower);
-		if(command == "liquify")
+		if(command == "liquefy")
 		{
-			Liquify(args);
+			//
 		}
 		else if(command == "solidify")
 		{
-			Solidify(args);
+			//
 		}
 		else if(command == "melt")
 		{
-			Melt(args);
+			//
 		}
 		else
 		{
