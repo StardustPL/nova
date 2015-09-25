@@ -4,6 +4,7 @@
 #include <string>
 #include <cctype>
 #include <vector>
+#include <stdexcept>
 
 namespace stardust
 {
