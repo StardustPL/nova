@@ -1,0 +1,4 @@
+
+function main ((lang:reference; lang:immutable; lang:array; lang:string) args) lang:void
+	for (lang:string arg) args
+		(lang:out; arg, '\n')
