@@ -14,7 +14,7 @@ int main(int, char const *const *plain_args)
 
 	if(args.size() > 1)
 	{
-		std::cerr << "Error: too many parameters" << std::endl;
+		std::cerr << "You need to pass only the path to the .json file of your choice, or execute this program in a directory containing a file named \"stardust.json\"" << std::endl;
 		return EXIT_FAILURE;
 	}
 	std::string const &json_filename = (args.empty()? "stardust.json" : args[0]);
