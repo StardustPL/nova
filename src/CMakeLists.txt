@@ -8,14 +8,14 @@ target_include_directories(stardust
 )
 
 # Stardust compiler
-add_executable(stardust-c
-	"stardust-c.cpp"
+add_executable(nova
+	"nova.cpp"
 )
-set_property(TARGET stardust-c PROPERTY CXX_STANDARD 14)
-target_include_directories(stardust-c
+set_property(TARGET nova PROPERTY CXX_STANDARD 14)
+target_include_directories(nova
 	PUBLIC "./"
 )
-target_link_libraries(stardust-c
+target_link_libraries(nova
 	stardust
 	json-parser
 )
