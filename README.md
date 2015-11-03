@@ -1,3 +1,4 @@
-Stardust [![travis](https://travis-ci.org/LB--/Stardust.svg?branch=compiler)](https://travis-ci.org/LB--/Stardust)
-========
-This language is one born out of frustration with other languages. Most of the frustration is my own, some of it is from others. Hopefully someone as inexperienced as me doesn't make the same mistakes I have to live with every day in other programming languages.
+nova [![travis](https://travis-ci.org/StardustPL/nova.svg?branch=0)](https://travis-ci.org/StardustPL/nova)
+====
+
+A compiler for the Stardust programming language, written in C++ and using LLVM.
