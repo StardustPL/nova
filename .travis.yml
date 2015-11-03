@@ -28,3 +28,12 @@ script:
   - cmake ..
   - cmake --build .
   - ctest -VV
+
+notifications:
+  email: false
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/2017953983e0840aa713
+    on_success: change
+    on_failure: always
+    on_start: never
